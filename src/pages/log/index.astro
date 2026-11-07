@@ -1,0 +1,25 @@
+---
+import { byNewest } from '../../data/site';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import LogItem from '../../components/LogItem.astro';
+
+const entries = (await getCollection('log')).sort(byNewest);
+const tags = [...new Set(entries.flatMap((e) => e.data.tags))].sort();
+---
+<Base title="Working log" description="What I built, tested and learned, including what failed.">
+  <PageHead title="Working log" lede="What I built, tested and learned, including what failed. Newest first." />
+  <section class="band paper section">
+    <div class="wrap">
+      <p class="tags topics">
+        <span>Topics:</span>
+        {tags.map((t) => <a class="tag" href={`/log/tags/${t}/`}>{t}</a>)}
+        <a class="tag" href="/rss.xml">RSS feed</a>
+      </p>
+      <ol class="log-list">
+        {entries.map((e) => <LogItem entry={e} />)}
+      </ol>
+    </div>
+  </section>
+</Base>

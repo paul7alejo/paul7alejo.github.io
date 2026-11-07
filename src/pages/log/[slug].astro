@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { fmtDate } from '../../data/site';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('log');
+  return entries.map((e) => ({ params: { slug: e.id }, props: { entry: e } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<Base title={entry.data.title} description={entry.data.summary}>
+  <PageHead title={entry.data.title}>
+    <p class="meta-line"><time datetime={fmtDate(entry.data.date)}>{fmtDate(entry.data.date)}</time></p>
+    <p class="tags">{entry.data.tags.map((t: string) => <a class="tag on-dark" href={`/log/tags/${t}/`}>{t}</a>)}</p>
+  </PageHead>
+  <section class="band paper section">
+    <div class="wrap prose">
+      <Content />
+      <p class="more"><a class="textlink" href="/log/">All log entries</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../data/site';
+---
+<Base title="About" description="Network and infrastructure engineer in New Zealand building towards an AWS cloud engineering role.">
+  <PageHead title="About" lede="A network engineer applying a hands-on infrastructure background to AWS, Terraform and security." />
+  <section class="band paper section">
+    <div class="wrap prose">
+      <img class="about-photo" src="/paul.jpg" width="800" height="1000" alt="Portrait of Paul Alejo">
+      <p>I'm a network and infrastructure engineer based in New Zealand, building towards an AWS cloud engineering role. I bring hands-on experience in enterprise networking and operations, and I'm applying that foundation to AWS, Terraform, security, monitoring and recovery. This site documents what I build, test and learn along the way.</p>
+      <p>My longer-term goal is to specialise in AWS cloud security, starting with defensive Blue Team skills.</p>
+
+      <h2>Credentials</h2>
+      <ul>
+        <li>CCNA</li>
+        <li>AWS Cloud Practitioner</li>
+        <li>AWS AI Practitioner</li>
+        <li>In progress: {site.exam.name}, exam target {site.exam.label}</li>
+      </ul>
+
+      <h2>How I work</h2>
+      <ul>
+        <li>Every change is written as code, reviewed as a plan, then applied.</li>
+        <li>Synthetic data only, in my own AWS account, with a budget alert watching cost.</li>
+        <li>Each project is built from what I have just studied, so the learning and the evidence stay together.</li>
+        <li>I record what failed as well as what worked, in the <a href="/log/">working log</a>.</li>
+      </ul>
+
+      <p class="cta">
+        <a class="btn solid" href="/projects/">See the projects</a>
+        <a class="btn outline" href="/contact/">Get in touch</a>
+      </p>
+    </div>
+  </section>
+</Base>

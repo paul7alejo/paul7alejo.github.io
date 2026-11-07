@@ -1,0 +1,15 @@
+---
+import { fmtDate } from '../data/site';
+interface Props { entry: any; }
+const { entry } = Astro.props;
+---
+<li>
+  <time datetime={fmtDate(entry.data.date)}>{fmtDate(entry.data.date)}</time>
+  <div>
+    <h3><a href={`/log/${entry.id}/`}>{entry.data.title}</a></h3>
+    <p>{entry.data.summary}</p>
+    <p class="tags">
+      {entry.data.tags.map((t: string) => <a class="tag" href={`/log/tags/${t}/`}>{t}</a>)}
+    </p>
+  </div>
+</li>

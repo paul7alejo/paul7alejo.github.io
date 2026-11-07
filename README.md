@@ -1,19 +1,43 @@
-# Portfolio dashboard
+# paul7alejo.github.io
 
-A static page that shows my projects and progress. No build step, no framework, no cost.
-Hosting: GitHub Pages (free for public repos).
+My portfolio and working log. Static site built with [Astro](https://astro.build), hosted free on GitHub Pages.
+Live at https://paul7alejo.github.io
 
-## Edit
-All content is in `site-data.js`. Change the text, save, push. The page updates in about a minute.
+## Add a log entry
 
-## Deploy (one time)
-1. On GitHub, create a **public** repo named `paul7alejo.github.io`.
-2. In this folder: `git init -b main && git add . && git commit -m "Portfolio dashboard" && git remote add origin https://github.com/paul7alejo/paul7alejo.github.io.git && git push -u origin main`
-3. Repo **Settings > Pages > Build and deployment > Source: GitHub Actions**.
-4. If the first run fails, open the **Actions** tab and re-run it. The site is at `https://paul7alejo.github.io`.
+Create a Markdown file in `src/content/log/`, for example `2026-11-15-iam-and-cloudtrail.md`:
+
+```markdown
+---
+title: Added IAM roles and CloudTrail
+date: 2026-11-15
+tags: [terraform, aws, security]
+summary: One sentence that shows in the list and the RSS feed.
+---
+
+## What I built
+## What I tested
+## What failed
+## What I learned
+```
+
+Commit and push. GitHub Actions builds and deploys in about a minute. Tags create their own pages automatically.
+
+## Add or update a project
+
+Case studies live in `src/content/projects/`. Site-wide details (LinkedIn URL, exam date, the "Now" strip) are in `src/data/site.ts`.
+
+## Preview locally (optional)
+
+Needs Node.js 22.23.4 or newer.
+
+```bash
+npm install
+npm run dev
+```
 
 ## Before you push anything public
+
 - No AWS account IDs, access keys, ARNs, IP addresses or email addresses in any file.
-- No `*.tfstate`, `*.tfvars` or `.terraform/` in any repo you link to (`git ls-files | grep -E 'tfstate|tfvars'` should print nothing).
+- No `*.tfstate`, `*.tfvars` or `.terraform/` in any repo you link to.
 - Only list certifications you hold, and only claim results you measured.
-- When a project repo is public, paste its URL into `url` in `site-data.js`.

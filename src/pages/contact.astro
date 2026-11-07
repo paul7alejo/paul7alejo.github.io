@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../data/site';
+---
+<Base title="Contact" description="Where to find Paul Alejo: GitHub and LinkedIn.">
+  <PageHead title="Contact" lede="My repositories are my public engineering workbench. This site is the curated version." />
+  <section class="band paper section">
+    <div class="wrap prose">
+      <p>The best way to reach me is through LinkedIn. The best way to check my work is on GitHub.</p>
+      <p class="cta">
+        <a class="btn solid" href={site.github}>GitHub</a>
+        {site.linkedin && <a class="btn outline" href={site.linkedin}>LinkedIn</a>}
+      </p>
+      <p class="note">A résumé will be added here once it is ready.</p>
+    </div>
+  </section>
+</Base>

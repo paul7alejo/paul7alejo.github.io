@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+---
+<Base title="Page not found">
+  <PageHead title="Page not found" lede="That page does not exist. It may have moved." />
+  <section class="band paper section">
+    <div class="wrap prose">
+      <p class="cta">
+        <a class="btn solid" href="/">Go to the homepage</a>
+        <a class="btn outline" href="/log/">Read the log</a>
+      </p>
+    </div>
+  </section>
+</Base>

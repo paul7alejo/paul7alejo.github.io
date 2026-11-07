@@ -1,0 +1,92 @@
+---
+import { byNewest } from '../data/site';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import LogItem from '../components/LogItem.astro';
+import { site } from '../data/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featured = projects[0];
+const latest = (await getCollection('log')).sort(byNewest).slice(0, 3);
+---
+<Base>
+  <section class="band dark hero-band">
+    <div class="wrap hero hero-grid">
+      <div class="hero-text">
+      <h1>Network engineer building secure AWS systems</h1>
+      <p class="lede">I'm documenting my transition into AWS cloud engineering through hands-on infrastructure, Terraform automation and security-focused projects.</p>
+      <p class="brand-line">Build. Automate. Secure.</p>
+      <p class="cta">
+        <a class="btn" href="/projects/">See the work</a>
+        <a class="btn ghost" href="/log/">Read the log</a>
+        {site.linkedin && <a class="btn ghost" href={site.linkedin}>LinkedIn</a>}
+      </p>
+      </div>
+      <img class="portrait" src="/paul.jpg" width="800" height="1000" alt="Portrait of Paul Alejo">
+    </div>
+    <div class="wrap now">
+      <dl class="now-list">
+        {site.now.slice(0, 2).map((n) => (
+          <div><dt>{n.label}</dt><dd>{n.text}</dd></div>
+        ))}
+        <div>
+          <dt>Exam target</dt>
+          <dd>{site.exam.label}<span class="days" data-exam={site.exam.date}></span></dd>
+        </div>
+        {site.now.slice(2).map((n) => (
+          <div><dt>{n.label}</dt><dd>{n.text}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="band paper section">
+    <div class="wrap about">
+      <h2>About</h2>
+      <div class="about-text">
+        <p>I'm a network and infrastructure engineer based in New Zealand, building towards an AWS cloud engineering role. I bring hands-on experience in enterprise networking and operations, and I'm applying that foundation to AWS, Terraform, security, monitoring and recovery.</p>
+        <p><a class="textlink" href="/about/">More about me</a></p>
+      </div>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="band dark section">
+      <div class="wrap">
+        <h2>Selected work</h2>
+        <article class="feature">
+          <div class="feature-main">
+            <h3>{featured.data.title}</h3>
+            <p class="feature-tag">{featured.data.tagline}</p>
+            <p class="cta">
+              <a class="btn" href={`/projects/${featured.id}/`}>Read the case study</a>
+              <a class="btn ghost" href={featured.data.repo}>View repository</a>
+            </p>
+          </div>
+          <div class="feature-side">
+            <h4>What it demonstrates</h4>
+            <ul class="plain">{featured.data.shows.map((s) => <li>{s}</li>)}</ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  )}
+
+  <section class="band paper section">
+    <div class="wrap">
+      <h2>Working log</h2>
+      <p class="sect-intro">What I built, tested and learned, newest first.</p>
+      <ol class="log-list">
+        {latest.map((e) => <LogItem entry={e} />)}
+      </ol>
+      <p class="more"><a class="textlink" href="/log/">All log entries</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-exam]').forEach((el) => {
+    const days = Math.ceil((new Date(el.dataset.exam!).getTime() - Date.now()) / 86400000);
+    if (days > 0) el.textContent = days + (days === 1 ? ' day to go' : ' days to go');
+  });
+</script>

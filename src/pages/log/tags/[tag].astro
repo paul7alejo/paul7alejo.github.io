@@ -1,0 +1,26 @@
+---
+import { byNewest } from '../../../data/site';
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PageHead from '../../../components/PageHead.astro';
+import LogItem from '../../../components/LogItem.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('log');
+  const tags = [...new Set(entries.flatMap((e) => e.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag, entries: entries.filter((e) => e.data.tags.includes(tag)).sort(byNewest) },
+  }));
+}
+const { tag, entries } = Astro.props;
+---
+<Base title={`Log: ${tag}`}>
+  <PageHead title={`Log entries tagged ${tag}`} />
+  <section class="band paper section">
+    <div class="wrap">
+      <ol class="log-list">{entries.map((e) => <LogItem entry={e} />)}</ol>
+      <p class="more"><a class="textlink" href="/log/">All log entries</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projects" description="Hands-on AWS projects built with Terraform, with the case study for each.">
+  <PageHead title="Projects" lede="Hands-on AWS work, each with a case study covering the problem, the design, the security decisions and what broke." />
+  <section class="band paper section">
+    <div class="wrap">
+      <ul class="project-list">
+        {projects.map((p) => (
+          <li>
+            <div>
+              <h2><a href={`/projects/${p.id}/`}>{p.data.title}</a></h2>
+              <p>{p.data.tagline}</p>
+              <p class="meta">{p.data.status}</p>
+              <p class="tags">{p.data.stack.map((s) => <span class="tag plain-tag">{s}</span>)}</p>
+            </div>
+            <p class="cta">
+              <a class="btn solid" href={`/projects/${p.id}/`}>Read the case study</a>
+              <a class="btn outline" href={p.data.repo}>View repository</a>
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p class="note">More projects will be added as I build them. Smaller course labs come after the first case study is complete.</p>
+    </div>
+  </section>
+</Base>

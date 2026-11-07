@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string; }
+const { title, description = site.description } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Network engineer building secure AWS systems`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const image = new URL('/og-image.png', Astro.site);
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/about/', label: 'About' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/log/', label: 'Log' },
+  { href: '/contact/', label: 'Contact' },
+];
+const built = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' });
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={image}>
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" type="application/rss+xml" title="Working log" href="/rss.xml">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='30' font-weight='700' fill='%23fff' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="band dark topbar">
+    <header class="bar wrap">
+      <a class="who" href="/">{site.name}</a>
+      <nav aria-label="Main">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+    </header>
+  </div>
+  <main id="main">
+    <slot />
+  </main>
+  <footer class="band dark">
+    <div class="wrap foot">
+      <p class="foot-name">{site.name}</p>
+      <p class="foot-links">
+        <a href={site.github}>GitHub</a>
+        {site.linkedin && <a href={site.linkedin}>LinkedIn</a>}
+        <a href="/rss.xml">RSS</a>
+      </p>
+      <p>Static site on GitHub Pages. No trackers, no cookies. Built {built}.</p>
+    </div>
+  </footer>
+</body>
+</html>

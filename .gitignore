@@ -1,6 +1,4 @@
-.DS_Store
 node_modules/
-*.tfstate
-*.tfstate.*
-*.tfvars
-.terraform/
+dist/
+.astro/
+.DS_Store
