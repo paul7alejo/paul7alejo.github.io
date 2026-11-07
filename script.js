@@ -8,6 +8,11 @@
     if (text !== undefined) n.textContent = text;
     return n;
   }
+  function link(text, href) {
+    var a = el("a", null, text);
+    a.href = href;
+    return a;
+  }
 
   document.getElementById("gh-link").href = S.github;
   document.getElementById("updated").textContent = S.updated;
@@ -38,21 +43,35 @@
     c.textContent = S.exam.name + " exam: " + S.exam.label + ".";
   }
 
-  var rows = document.getElementById("project-rows");
+  var list = document.getElementById("project-list");
   S.projects.forEach(function (p) {
-    var tr = el("tr");
-    var td1 = el("td", null, p.name); td1.setAttribute("data-label", "Project");
-    var td2 = el("td", null, p.stack); td2.setAttribute("data-label", "Built with");
-    var td3 = el("td", null, p.state); td3.setAttribute("data-label", "State");
-    var td4 = el("td"); td4.setAttribute("data-label", "Evidence");
-    td4.appendChild(document.createTextNode(p.evidence));
-    if (p.url) {
-      td4.appendChild(document.createTextNode(" "));
-      var a = el("a", null, "View the repository");
-      a.href = p.url;
-      td4.appendChild(a);
-    }
-    [td1, td2, td3, td4].forEach(function (t) { tr.appendChild(t); });
+    var art = el("article", "project");
+    art.appendChild(el("h3", null, p.name));
+    art.appendChild(el("p", "tagline", p.tagline));
+    var dl = el("dl", "facts");
+    [["Built with", p.stack], ["State", p.state], ["Evidence", p.evidence]].forEach(function (f) {
+      dl.appendChild(el("dt", null, f[0]));
+      dl.appendChild(el("dd", null, f[1]));
+    });
+    art.appendChild(dl);
+    var links = el("p", "links");
+    if (p.url) links.appendChild(link("View the repository", p.url));
+    if (p.diagram) links.appendChild(link("Read the architecture notes", p.diagram));
+    art.appendChild(links);
+    list.appendChild(art);
+  });
+
+  var rows = document.getElementById("control-rows");
+  S.controls.forEach(function (k) {
+    var tr = el("tr", k.status);
+    var td1 = el("td", null, k.name); td1.setAttribute("data-label", "Control");
+    var td2 = el("td", null, k.detail); td2.setAttribute("data-label", "What it does");
+    var td3 = el("td"); td3.setAttribute("data-label", "Status");
+    var chip = el("span", "chip " + k.status);
+    if (k.status === "built") chip.appendChild(el("span", "tick", "✓")).setAttribute("aria-hidden", "true");
+    chip.appendChild(document.createTextNode(k.when));
+    td3.appendChild(chip);
+    [td1, td2, td3].forEach(function (t) { tr.appendChild(t); });
     rows.appendChild(tr);
   });
 })();
